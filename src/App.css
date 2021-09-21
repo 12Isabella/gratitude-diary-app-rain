@@ -1,3 +1,15 @@
 .App {
   text-align: center;
 }
+
+.App h1 {
+  font-family: "Lora", serif;
+}
+
+#input-form {
+  width: 40%;
+}
+.gratitude-input {
+  display: flex;
+  justify-content: center;
+}
