@@ -4,8 +4,7 @@ import "./App.css";
 function App() {
   const [currentItem, setCurrentItem] = useState("");
   const [items, setItems] = useState(function () {
-    console.log("hi");
-    const itemsJson = window.localStorage.getItem("gratitudeItems");
+    const itemsJson = window.localStorage.getItem("gratitudeItems") || "[]";
     return JSON.parse(itemsJson);
   });
 
