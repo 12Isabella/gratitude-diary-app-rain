@@ -1,20 +1,31 @@
 import { useState } from "react";
 import "./App.css";
+import GratitudeItem from "./GratitudeItem";
 
 function App() {
   const [currentItem, setCurrentItem] = useState("");
+
   const [items, setItems] = useState(function () {
     const itemsJson = window.localStorage.getItem("gratitudeItems") || "[]";
-    return JSON.parse(itemsJson);
+
+    return [itemsJson];
   });
 
   function handleSubmit(event) {
     event.preventDefault();
-    const updatedItems = items.concat(currentItem);
+    const date = new Date();
+    const newNote = {
+      id: 1,
+      text: currentItem,
+      date: date.toLocaleDateString(),
+    };
+    const newNoteString = JSON.stringify(newNote);
+    const updatedItems = [...items, newNoteString];
+
     setItems(updatedItems);
     setCurrentItem("");
-    const itemsJson = JSON.stringify(updatedItems);
-    window.localStorage.setItem("gratitudeItems", itemsJson);
+
+    window.localStorage.setItem("gratitudeItems", updatedItems);
   }
 
   function handleChange(event) {
@@ -40,19 +51,10 @@ function App() {
             />
           </form>
         </div>
+
         <div className="gratitude-item-list">
-          {items.map(function (item, index) {
-            return (
-              <div key={index}>
-                <div className="gratitude-item">
-                  <div>{item}</div>
-                  <footer className="note-footer">
-                    <small>22/09/2021</small>
-                    <i className="fas fa-trash-alt"></i>
-                  </footer>
-                </div>
-              </div>
-            );
+          {items.map((item, index) => {
+            return <GratitudeItem key={index} item={item} />;
           })}
         </div>
       </div>
