@@ -8,24 +8,30 @@ function App() {
   const [items, setItems] = useState(function () {
     const itemsJson = window.localStorage.getItem("gratitudeItems") || "[]";
 
-    return [itemsJson];
+    // parse the JSON into the list of items
+    return JSON.parse(itemsJson);
   });
 
   function handleSubmit(event) {
     event.preventDefault();
     const date = new Date();
+
     const newNote = {
       id: 1,
       text: currentItem,
       date: date.toLocaleDateString(),
     };
-    const newNoteString = JSON.stringify(newNote);
-    const updatedItems = [...items, newNoteString];
+
+    const updatedItems = [...items, newNote];
 
     setItems(updatedItems);
+
     setCurrentItem("");
 
-    window.localStorage.setItem("gratitudeItems", updatedItems);
+    // Store the updated list in localStorage. Since localStorage can only store
+    // strings, we encode the array of objects as JSON before storing them.
+    const updatedItemsJson = JSON.stringify(updatedItems);
+    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
   }
 
   function handleChange(event) {
