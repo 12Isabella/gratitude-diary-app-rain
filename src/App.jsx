@@ -23,8 +23,6 @@ function App() {
       date: date.toLocaleDateString(),
     };
 
-    console.log(newNote);
-
     const updatedItems = [...items, newNote];
 
     setItems(updatedItems);
@@ -44,7 +42,7 @@ function App() {
   function handleDelete(id) {
     const updatedItems = items.filter((item) => item.id !== id);
     setItems(updatedItems);
-    console.log(`handleDelete${updatedItems}`);
+
     const updatedItemsJson = JSON.stringify(updatedItems);
     window.localStorage.setItem("gratitudeItems", updatedItemsJson);
   }
