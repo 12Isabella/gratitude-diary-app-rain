@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
 
@@ -17,10 +18,12 @@ function App() {
     const date = new Date();
 
     const newNote = {
-      id: 1,
+      id: nanoid(),
       text: currentItem,
       date: date.toLocaleDateString(),
     };
+
+    console.log(newNote);
 
     const updatedItems = [...items, newNote];
 
@@ -36,6 +39,14 @@ function App() {
 
   function handleChange(event) {
     setCurrentItem(event.target.value);
+  }
+
+  function handleDelete(id) {
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
+    console.log(`handleDelete${updatedItems}`);
+    const updatedItemsJson = JSON.stringify(updatedItems);
+    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
   }
 
   return (
@@ -60,7 +71,13 @@ function App() {
 
         <div className="gratitude-item-list">
           {items.map((item, index) => {
-            return <GratitudeItem key={index} item={item} />;
+            return (
+              <GratitudeItem
+                key={index}
+                item={item}
+                handleDelete={handleDelete}
+              />
+            );
           })}
         </div>
       </div>
