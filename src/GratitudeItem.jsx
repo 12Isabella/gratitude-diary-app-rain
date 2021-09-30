@@ -9,7 +9,9 @@ const GratitudeItem = ({ index, item, handleDelete }) => {
           <small>{item.date}</small>
           <i
             className="fas fa-trash-alt"
-            onClick={() => handleDelete(item.id)}
+            onClick={function () {
+              handleDelete(item.id);
+            }}
           ></i>
         </footer>
       </div>

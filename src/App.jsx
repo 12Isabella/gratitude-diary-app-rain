@@ -40,7 +40,9 @@ function App() {
   }
 
   function handleDelete(id) {
-    const updatedItems = items.filter((item) => item.id !== id);
+    const updatedItems = items.filter(function (item) {
+      return item.id !== id;
+    });
     setItems(updatedItems);
 
     const updatedItemsJson = JSON.stringify(updatedItems);
@@ -68,7 +70,7 @@ function App() {
         </div>
 
         <div className="gratitude-item-list">
-          {items.map((item, index) => {
+          {items.map(function (item, index) {
             return (
               <GratitudeItem
                 key={index}
