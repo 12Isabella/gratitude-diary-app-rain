@@ -2,6 +2,7 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
+import EditModal from "./EditModal";
 
 function App() {
   const [currentItem, setCurrentItem] = useState("");
@@ -12,6 +13,7 @@ function App() {
     // parse the JSON into the list of items
     return JSON.parse(itemsJson);
   });
+  const [editOpen, setEditOpen] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -39,6 +41,11 @@ function App() {
     setCurrentItem(event.target.value);
   }
 
+  function handleEdit(id) {
+    alert(`Editing Item with ${id}`);
+    setEditOpen(true);
+  }
+
   function handleDelete(id) {
     const updatedItems = items.filter(function (item) {
       return item.id !== id;
@@ -48,10 +55,11 @@ function App() {
     const updatedItemsJson = JSON.stringify(updatedItems);
     window.localStorage.setItem("gratitudeItems", updatedItemsJson);
   }
-
+  const modal = editOpen ? <EditModal /> : null;
   return (
     <div className="App">
       <div className="container mt-3">
+        {modal}
         <h1 className="mt-3 mb-5">What are you grateful for today?</h1>
         <div className="input-group mb-5 gratitude-input ">
           <div className="input-group-prepend "></div>
@@ -76,6 +84,7 @@ function App() {
                 key={index}
                 item={item}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             );
           })}
