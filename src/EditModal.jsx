@@ -15,11 +15,14 @@ const EditModal = (props) => {
     console.log(id);
     console.log(items);
 
-    // How do I get the specific Item to be edited?
+    const newItemList = items.map((gratitudeItem) =>
+      gratitudeItem.id === id
+        ? { ...gratitudeItem, text: editInput }
+        : gratitudeItem
+    );
+    console.log(newItemList);
 
     // set Edit Input as content of GratitudeItem here or send them back to App.js (how?)?
-
-    //Items + updated Item...???
   }
 
   return (
