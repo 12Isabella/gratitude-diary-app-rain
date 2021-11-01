@@ -9,15 +9,17 @@ const EditModal = (props) => {
     setEditInput(event.target.value);
   }
 
-  function saveEdit(event, id) {
+  function saveEdit(event, id, items) {
     event.preventDefault();
-    // set EditInput in local storage
+    // set EditInput in local storage = general idea
     console.log(id);
+    console.log(items);
+
+    // How do I get the specific Item to be edited?
+
+    // set Edit Input as content of GratitudeItem here or send them back to App.js (how?)?
+
     //Items + updated Item...???
-    // 1. How do I get Items form App.js?
-    // 2. How do I get the edited Item to be edited?
-    //handleEdit (id)
-    // set Edit Input as content of GratitudeItem
   }
 
   return (
@@ -32,7 +34,7 @@ const EditModal = (props) => {
         ></textarea>
         <i
           className="fas fa-save icon"
-          onClick={(event) => saveEdit(event, props.id)}
+          onClick={(event) => saveEdit(event, props.id, props.items)}
         ></i>
       </div>
     </div>

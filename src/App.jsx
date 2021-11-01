@@ -59,7 +59,11 @@ function App() {
   return (
     <div className="App">
       <div className="container mt-3">
-        {editModal.open ? <EditModal id={editModal.id} /> : <React.Fragment />}
+        {editModal.open ? (
+          <EditModal id={editModal.id} items={items} />
+        ) : (
+          <React.Fragment />
+        )}
 
         <h1 className="mt-3 mb-5">What are you grateful for today?</h1>
         <div className="input-group mb-5 gratitude-input ">
