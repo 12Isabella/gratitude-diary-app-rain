@@ -46,6 +46,10 @@ function App() {
     setEditModal({ open: true, id: id });
   }
 
+  function closeModal() {
+    setEditModal({ open: false, id: 0 });
+  }
+
   const updateGratitudeItems = (gratitudeItems) => {
     setItems(gratitudeItems);
     const updatedItemsJson = JSON.stringify(gratitudeItems);
@@ -70,6 +74,7 @@ function App() {
             id={editModal.id}
             items={items}
             updateGratitudeItems={updateGratitudeItems}
+            closeModal={closeModal}
           />
         ) : (
           <React.Fragment />

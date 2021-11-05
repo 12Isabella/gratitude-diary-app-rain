@@ -22,8 +22,6 @@ const EditModal = (props) => {
     );
     console.log(newItemList);
     props.updateGratitudeItems(newItemList);
-
-    // set Edit Input as content of GratitudeItem here or send them back to App.js (how?)?
   }
 
   return (
@@ -39,6 +37,10 @@ const EditModal = (props) => {
         <i
           className="fas fa-save icon"
           onClick={(event) => saveEdit(event, props.id, props.items)}
+        ></i>
+        <i
+          className="fas fa-times-circle icon"
+          onClick={() => props.closeModal()}
         ></i>
       </div>
     </div>
