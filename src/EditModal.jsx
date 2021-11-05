@@ -21,6 +21,7 @@ const EditModal = (props) => {
         : gratitudeItem
     );
     console.log(newItemList);
+    props.updateGratitudeItems(newItemList);
 
     // set Edit Input as content of GratitudeItem here or send them back to App.js (how?)?
   }

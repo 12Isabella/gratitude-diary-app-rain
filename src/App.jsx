@@ -46,6 +46,12 @@ function App() {
     setEditModal({ open: true, id: id });
   }
 
+  const updateGratitudeItems = (gratitudeItems) => {
+    setItems(gratitudeItems);
+    const updatedItemsJson = JSON.stringify(gratitudeItems);
+    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
+  };
+
   function handleDelete(id) {
     const updatedItems = items.filter(function (item) {
       return item.id !== id;
@@ -60,7 +66,11 @@ function App() {
     <div className="App">
       <div className="container mt-3">
         {editModal.open ? (
-          <EditModal id={editModal.id} items={items} />
+          <EditModal
+            id={editModal.id}
+            items={items}
+            updateGratitudeItems={updateGratitudeItems}
+          />
         ) : (
           <React.Fragment />
         )}
