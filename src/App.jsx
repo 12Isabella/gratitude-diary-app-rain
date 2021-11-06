@@ -2,6 +2,19 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
+import EditModal from "./EditModal";
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBL85oyvwM0v1asFDoSBvE4Ic_QqCXzH3E",
+  authDomain: "rain-db.firebaseapp.com",
+  projectId: "rain-db",
+  storageBucket: "rain-db.appspot.com",
+  messagingSenderId: "542470929269",
+  appId: "1:542470929269:web:6ff292ea412271f4f8b13c",
+};
+
+const app = initializeApp(firebaseConfig);
 
 function App() {
   const [currentItem, setCurrentItem] = useState("");
