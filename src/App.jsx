@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
-import EditModal from "./EditModal";
+
 import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBL85oyvwM0v1asFDoSBvE4Ic_QqCXzH3E",
@@ -15,18 +17,27 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Example Test
+async function getgratitudeItems(db) {
+  const gratitudeItemsCol = collection(db, "gratitudeItems");
+  const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
+  const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) => doc.data());
+  return gratitudeItemList;
+}
 
 function App() {
   const [currentItem, setCurrentItem] = useState("");
 
-  const [items, setItems] = useState(function () {
-    const itemsJson = window.localStorage.getItem("gratitudeItems") || "[]";
-
-    // parse the JSON into the list of items
-    return JSON.parse(itemsJson);
-  });
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    console.log("useEffect running");
+    getgratitudeItems(db).then((items) => setItems(items));
+  }, []);
 
   function handleSubmit(event) {
+    console.log("handleSubmit running");
     event.preventDefault();
     const date = new Date();
 
@@ -42,10 +53,9 @@ function App() {
 
     setCurrentItem("");
 
-    // Store the updated list in localStorage. Since localStorage can only store
-    // strings, we encode the array of objects as JSON before storing them.
-    const updatedItemsJson = JSON.stringify(updatedItems);
-    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
+    // Store the new gratitude item in firestore DB
+
+    setDoc(doc(db, "gratitudeItems", newNote.id), newNote);
   }
 
   function handleChange(event) {
@@ -58,8 +68,7 @@ function App() {
     });
     setItems(updatedItems);
 
-    const updatedItemsJson = JSON.stringify(updatedItems);
-    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
+    deleteDoc(doc(db, "gratitudeItems", id));
   }
 
   return (
