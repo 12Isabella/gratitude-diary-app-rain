@@ -42,7 +42,6 @@ function App() {
   }
 
   function handleEdit(id) {
-    alert(`Editing Item with ${id}`);
     setEditModal({ open: true, id: id });
   }
 

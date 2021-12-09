@@ -26,7 +26,7 @@ const EditModal = (props) => {
 
   return (
     <div className="editModal">
-      <div className="form-group">
+      <div className="form-group gratitude-item">
         <label htmlFor="exampleFormControlTextarea1"></label>
         <textarea
           onChange={handleChange}
@@ -34,14 +34,16 @@ const EditModal = (props) => {
           id="exampleFormControlTextarea1"
           rows="3"
         ></textarea>
-        <i
-          className="fas fa-save icon"
-          onClick={(event) => saveEdit(event, props.id, props.items)}
-        ></i>
-        <i
-          className="fas fa-times-circle icon"
-          onClick={() => props.closeModal()}
-        ></i>
+        <div className="note-footer">
+          <i
+            className="fas fa-save icon"
+            onClick={(event) => saveEdit(event, props.id, props.items)}
+          ></i>
+          <i
+            className="fas fa-times-circle icon"
+            onClick={() => props.closeModal()}
+          ></i>
+        </div>
       </div>
     </div>
   );
