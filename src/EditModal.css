@@ -7,6 +7,12 @@
   border-radius: 4px;
 }
 
+@media (max-width: 600px) {
+  .editModal {
+    position: sticky;
+  }
+}
+
 .gratitude-item {
   background-color: #fcad4575;
   border-radius: 10px;
