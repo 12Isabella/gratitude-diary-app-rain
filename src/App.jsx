@@ -5,8 +5,14 @@ import GratitudeItem from "./GratitudeItem";
 import EditModal from "./EditModal";
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { doc, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBL85oyvwM0v1asFDoSBvE4Ic_QqCXzH3E",
@@ -17,12 +23,14 @@ const firebaseConfig = {
   appId: "1:542470929269:web:6ff292ea412271f4f8b13c",
 };
 
+const collectionName = "gratitudeItems";
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Example Test
 async function getgratitudeItems(db) {
-  const gratitudeItemsCol = collection(db, "gratitudeItems");
+  const gratitudeItemsCol = collection(db, collectionName);
   const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
   const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) => doc.data());
   return gratitudeItemList;
@@ -57,7 +65,7 @@ function App() {
 
     // Store the new gratitude item in firestore DB
 
-    setDoc(doc(db, "gratitudeItems", newNote.id), newNote);
+    setDoc(doc(db, collectionName, newNote.id), newNote);
   }
 
   function handleChange(event) {
@@ -72,10 +80,13 @@ function App() {
     setEditModal({ open: false, id: 0 });
   }
 
-  const updateGratitudeItems = (gratitudeItems) => {
+  const updateGratitudeItems = (gratitudeItems, id) => {
     setItems(gratitudeItems);
-    const updatedItemsJson = JSON.stringify(gratitudeItems);
-    window.localStorage.setItem("gratitudeItems", updatedItemsJson);
+    // update item in firebase
+    const updatedItem = gratitudeItems.find(
+      (gratitudeItem) => gratitudeItem.id === id
+    );
+    setDoc(doc(db, collectionName, id), updatedItem);
   };
 
   function handleDelete(id) {
@@ -84,7 +95,7 @@ function App() {
     });
     setItems(updatedItems);
 
-    deleteDoc(doc(db, "gratitudeItems", id));
+    deleteDoc(doc(db, collectionName, id));
   }
 
   return (

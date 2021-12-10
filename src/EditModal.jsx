@@ -11,7 +11,7 @@ const EditModal = (props) => {
 
   function saveEdit(event, id, items) {
     event.preventDefault();
-    // set EditInput in local storage = general idea
+    // send updated items to mother component
     console.log(id);
     console.log(items);
 
@@ -20,8 +20,8 @@ const EditModal = (props) => {
         ? { ...gratitudeItem, text: editInput }
         : gratitudeItem
     );
-    console.log(newItemList);
-    props.updateGratitudeItems(newItemList);
+
+    props.updateGratitudeItems(newItemList, id);
   }
 
   return (
