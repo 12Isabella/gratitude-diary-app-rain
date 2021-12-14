@@ -70,7 +70,9 @@ function App() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
+
         const user = userCredential.user;
+        console.log(user);
         setUser(user);
         // ...
       })
@@ -98,6 +100,7 @@ function App() {
       id: nanoid(),
       text: currentItem,
       date: date.toLocaleDateString(),
+      uid: user.uid,
     };
 
     const updatedItems = [...items, newNote];
