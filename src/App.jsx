@@ -31,39 +31,43 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-function handleSignUp(email, password) {
-  alert(`signing up ${email} with ${password}`);
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      console.log("signed in", userCredential);
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error", error);
-      // ..
-    });
-}
-
-async function getgratitudeItems(db) {
-  const gratitudeItemsCol = collection(db, collectionName);
-  const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
-  const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) => doc.data());
-  return gratitudeItemList;
-}
-
 function App() {
   const [currentItem, setCurrentItem] = useState("");
-
   const [items, setItems] = useState([]);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     console.log("useEffect running");
     getgratitudeItems(db).then((items) => setItems(items));
   }, []);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
+
+  function handleSignUp(email, password) {
+    alert(`signing up ${email} with ${password}`);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        console.log("signed in", userCredential);
+        const user = userCredential.user;
+        setUser(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("error", error);
+        // ..
+      });
+  }
+
+  async function getgratitudeItems(db) {
+    const gratitudeItemsCol = collection(db, collectionName);
+    const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
+    const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) =>
+      doc.data()
+    );
+    return gratitudeItemList;
+  }
 
   function handleSubmit(event) {
     console.log("handleSubmit running");
@@ -120,7 +124,7 @@ function App() {
   return (
     <div className="App">
       <div className="container mt-3">
-        <LogIn signUp={handleSignUp} />
+        {user === null ? <LogIn signUp={handleSignUp} /> : <React.Fragment />}
         {editModal.open ? (
           <EditModal
             id={editModal.id}
