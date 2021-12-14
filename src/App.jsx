@@ -4,7 +4,11 @@ import "./App.css";
 import GratitudeItem from "./GratitudeItem";
 import EditModal from "./EditModal";
 import LogIn from "./LogIn";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 import { initializeApp } from "firebase/app";
 import {
@@ -57,6 +61,22 @@ function App() {
         const errorMessage = error.message;
         console.log("error", error);
         // ..
+      });
+  }
+
+  function handleLogIn(email, password) {
+    alert(`logging in ${email} with ${password}`);
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setUser(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
       });
   }
 
@@ -124,7 +144,11 @@ function App() {
   return (
     <div className="App">
       <div className="container mt-3">
-        {user === null ? <LogIn signUp={handleSignUp} /> : <React.Fragment />}
+        {user === null ? (
+          <LogIn signUp={handleSignUp} logIn={handleLogIn} />
+        ) : (
+          <React.Fragment />
+        )}
         {editModal.open ? (
           <EditModal
             id={editModal.id}

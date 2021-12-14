@@ -18,6 +18,12 @@ const LogIn = (props) => {
     event.preventDefault();
     props.signUp(emailInput, passwordInput);
   }
+
+  function handleLogIn(event) {
+    event.preventDefault();
+    props.logIn(emailInput, passwordInput);
+  }
+
   return (
     <div className="LogIn">
       <div className="mb-3">
@@ -41,7 +47,9 @@ const LogIn = (props) => {
       <button onClick={handleSignUp} className=" btn btn-dark p-2 me-1">
         Sign up
       </button>
-      <button className=" btn btn-dark p-2">Log in </button>
+      <button onClick={handleLogIn} className=" btn btn-dark p-2">
+        Log in{" "}
+      </button>
     </div>
   );
 };
