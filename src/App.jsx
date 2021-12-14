@@ -3,6 +3,8 @@ import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
 import EditModal from "./EditModal";
+import LogIn from "./LogIn";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import { initializeApp } from "firebase/app";
 import {
@@ -27,8 +29,25 @@ const collectionName = "gratitudeItems";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
-// Example Test
+function handleSignUp(email, password) {
+  alert(`signing up ${email} with ${password}`);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      console.log("signed in", userCredential);
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("error", error);
+      // ..
+    });
+}
+
 async function getgratitudeItems(db) {
   const gratitudeItemsCol = collection(db, collectionName);
   const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
@@ -101,6 +120,7 @@ function App() {
   return (
     <div className="App">
       <div className="container mt-3">
+        <LogIn signUp={handleSignUp} />
         {editModal.open ? (
           <EditModal
             id={editModal.id}
