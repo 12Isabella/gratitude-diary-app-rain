@@ -37,7 +37,7 @@ async function getgratitudeItems(db) {
 }
 
 function App() {
-  const [currentItem, setCurrentItem] = useState("");
+  const [currentText, setCurrentText] = useState("");
 
   const [items, setItems] = useState([]);
   useEffect(() => {
@@ -47,13 +47,12 @@ function App() {
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
   function handleSubmit(event) {
-    console.log("handleSubmit running");
     event.preventDefault();
     const date = new Date();
 
     const newNote = {
       id: nanoid(),
-      text: currentItem,
+      text: currentText,
       date: date.toLocaleDateString(),
     };
 
@@ -61,7 +60,7 @@ function App() {
 
     setItems(updatedItems);
 
-    setCurrentItem("");
+    setCurrentText("");
 
     // Store the new gratitude item in firestore DB
 
@@ -69,7 +68,7 @@ function App() {
   }
 
   function handleChange(event) {
-    setCurrentItem(event.target.value);
+    setCurrentText(event.target.value);
   }
 
   function handleEdit(id) {
@@ -98,26 +97,27 @@ function App() {
     deleteDoc(doc(db, collectionName, id));
   }
 
+  const modal = editModal.open ? (
+    <EditModal
+      id={editModal.id}
+      items={items}
+      updateGratitudeItems={updateGratitudeItems}
+      closeModal={closeModal}
+    />
+  ) : (
+    <React.Fragment />
+  );
+
   return (
     <div className="App">
       <div className="container mt-3">
-        {editModal.open ? (
-          <EditModal
-            id={editModal.id}
-            items={items}
-            updateGratitudeItems={updateGratitudeItems}
-            closeModal={closeModal}
-          />
-        ) : (
-          <React.Fragment />
-        )}
-
+        {modal}
         <h1 className="mt-3 mb-5">What are you grateful for today?</h1>
         <div className="input-group mb-5 gratitude-input ">
           <div className="input-group-prepend "></div>
           <form id="input-form" onSubmit={handleSubmit}>
             <input
-              value={currentItem}
+              value={currentText}
               placeholder="I am happy and grateful for..."
               type="text"
               className="form-control"
@@ -136,7 +136,7 @@ function App() {
                 key={index}
                 item={item}
                 handleDelete={handleDelete}
-                handleEdit={handleEdit}
+                onEdit={handleEdit}
               />
             );
           })}

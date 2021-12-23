@@ -12,9 +12,6 @@ const EditModal = (props) => {
   function saveEdit(event, id, items) {
     event.preventDefault();
     // send updated items to mother component
-    console.log(id);
-    console.log(items);
-
     const newItemList = items.map((gratitudeItem) =>
       gratitudeItem.id === id
         ? { ...gratitudeItem, text: editInput }

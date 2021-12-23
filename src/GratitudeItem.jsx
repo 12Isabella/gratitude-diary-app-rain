@@ -1,6 +1,6 @@
 import React from "react";
 
-const GratitudeItem = ({ index, item, handleDelete, handleEdit }) => {
+const GratitudeItem = ({ index, item, handleDelete, onEdit }) => {
   return (
     <div key={index}>
       <div className="gratitude-item">
@@ -10,7 +10,7 @@ const GratitudeItem = ({ index, item, handleDelete, handleEdit }) => {
           <i
             className="fas fa-edit icon me-1"
             onClick={function () {
-              handleEdit(item.id);
+              onEdit(item.id);
             }}
           ></i>
           <i
