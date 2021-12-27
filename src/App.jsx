@@ -41,7 +41,6 @@ function App() {
 
   const [items, setItems] = useState([]);
   useEffect(() => {
-    console.log("useEffect running");
     getgratitudeItems(db).then((items) => setItems(items));
   }, []);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
