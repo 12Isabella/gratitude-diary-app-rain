@@ -15,12 +15,12 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBL85oyvwM0v1asFDoSBvE4Ic_QqCXzH3E",
-  authDomain: "rain-db.firebaseapp.com",
-  projectId: "rain-db",
-  storageBucket: "rain-db.appspot.com",
-  messagingSenderId: "542470929269",
-  appId: "1:542470929269:web:6ff292ea412271f4f8b13c",
+  apiKey: "AIzaSyBBIL2pH5FrECJjF4yLqN5cUGH9lDbp0vY",
+  authDomain: "rain-main-db.firebaseapp.com",
+  projectId: "rain-main-db",
+  storageBucket: "rain-main-db.appspot.com",
+  messagingSenderId: "183941460133",
+  appId: "1:183941460133:web:2940f96eae9c5708155d4c",
 };
 
 const collectionName = "gratitudeItems";
