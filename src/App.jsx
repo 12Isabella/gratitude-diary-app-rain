@@ -48,6 +48,7 @@ function App() {
   useEffect(() => {
     console.log("useEffect running");
     getgratitudeItems(db).then((items) => {
+      // TO-DO: filter in DB query
       const filtered = items.filter((item) => {
         if ((user !== null) === true && (item.uid === user.uid) === true) {
           return true;
