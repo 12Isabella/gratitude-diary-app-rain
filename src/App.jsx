@@ -41,9 +41,14 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log(auth.currentUser);
+    setUser(auth.currentUser);
+  }, []);
+
+  useEffect(() => {
     console.log("useEffect running");
     getgratitudeItems(db).then((items) => setItems(items));
-  }, []);
+  }, [user]);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
   function handleSignUp(email, password) {
