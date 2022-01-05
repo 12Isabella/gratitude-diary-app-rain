@@ -47,44 +47,55 @@ function App() {
 
   useEffect(() => {
     console.log("useEffect running");
-    getgratitudeItems(db).then((items) => setItems(items));
+    getgratitudeItems(db).then((items) => {
+      const filtered = items.filter((item) => {
+        if ((user !== null) === true && (item.uid === user.uid) === true) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setItems(filtered);
+    });
   }, [user]);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
   function handleSignUp(email, password) {
     alert(`signing up ${email} with ${password}`);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password).then(
+      (userCredential) => {
         // Signed in
         console.log("signed in", userCredential);
         const user = userCredential.user;
         setUser(user);
         // ...
-      })
-      .catch((error) => {
+      }
+    );
+    // handle fail not implemented yet
+    /* .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log("error", error);
         // ..
-      });
+      });*/
   }
 
   function handleLogIn(email, password) {
     alert(`logging in ${email} with ${password}`);
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      // Signed in
 
-        const user = userCredential.user;
-        console.log(user);
-        setUser(user);
-        // ...
-      })
-      .catch((error) => {
+      const user = userCredential.user;
+      console.log(user);
+      setUser(user);
+      // ...
+    });
+    // handle fail not implemented yet
+    /*  .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-      });
+      });*/
   }
 
   async function getgratitudeItems(db) {
