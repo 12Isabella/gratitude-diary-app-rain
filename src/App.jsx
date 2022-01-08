@@ -19,6 +19,8 @@ import {
   getDocs,
   setDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -44,17 +46,11 @@ function App() {
   onAuthStateChanged(auth, (user) => setUser(user));
 
   useEffect(() => {
-    getgratitudeItems(db).then((items) => {
-      // TO-DO: filter in DB query
-      const filtered = items.filter((item) => {
-        if ((user !== null) === true && (item.uid === user.uid) === true) {
-          return true;
-        } else {
-          return false;
-        }
+    if (user != null) {
+      getgratitudeItems(db, user.uid).then((items) => {
+        setItems(items);
       });
-      setItems(filtered);
-    });
+    }
   }, [user]);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
@@ -93,9 +89,10 @@ function App() {
       });*/
   }
 
-  async function getgratitudeItems(db) {
+  async function getgratitudeItems(db, userID) {
     const gratitudeItemsCol = collection(db, collectionName);
-    const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
+    const q = query(gratitudeItemsCol, where("uid", "==", userID));
+    const gratitudeItemSnapshot = await getDocs(q);
     const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) =>
       doc.data()
     );
