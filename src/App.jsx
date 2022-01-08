@@ -8,6 +8,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { initializeApp } from "firebase/app";
@@ -40,10 +41,7 @@ function App() {
   const [items, setItems] = useState([]);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    console.log(auth.currentUser);
-    setUser(auth.currentUser);
-  }, []);
+  onAuthStateChanged(auth, (user) => setUser(user));
 
   useEffect(() => {
     console.log("useEffect running");
