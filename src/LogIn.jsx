@@ -26,30 +26,36 @@ const LogIn = (props) => {
 
   return (
     <div className="LogIn">
-      <div className="mb-3">
-        <input
-          type="email"
-          className="form-control"
-          id="exampleFormControlInput1"
-          placeholder="name@example.com"
-          onChange={handleEmailInput}
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          onChange={handlePasswordInput}
-          type="password"
-          placeholder="password"
-          className="form-control"
-          id="inputPassword"
-        />
-      </div>
-      <button onClick={handleSignUp} className=" btn btn-dark p-2 me-1">
-        Sign up
-      </button>
-      <button onSubmit={handleLogIn} className=" btn btn-dark p-2">
-        Log in{" "}
-      </button>
+      <form>
+        <div className="mb-3">
+          <input
+            type="email"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            onChange={handleEmailInput}
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            onChange={handlePasswordInput}
+            type="password"
+            placeholder="password"
+            className="form-control"
+            id="inputPassword"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleSignUp}
+          className=" btn btn-dark p-2 me-1"
+        >
+          Sign up
+        </button>
+        <button onClick={handleLogIn} className=" btn btn-dark p-2">
+          Log in{" "}
+        </button>
+      </form>
     </div>
   );
 };
