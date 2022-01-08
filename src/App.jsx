@@ -44,7 +44,6 @@ function App() {
   onAuthStateChanged(auth, (user) => setUser(user));
 
   useEffect(() => {
-    console.log("useEffect running");
     getgratitudeItems(db).then((items) => {
       // TO-DO: filter in DB query
       const filtered = items.filter((item) => {
@@ -60,7 +59,6 @@ function App() {
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
   function handleSignUp(email, password) {
-    alert(`signing up ${email} with ${password}`);
     createUserWithEmailAndPassword(auth, email, password).then(
       (userCredential) => {
         // Signed in
@@ -80,8 +78,6 @@ function App() {
   }
 
   function handleLogIn(email, password) {
-    alert(`logging in ${email} with ${password}`);
-
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       // Signed in
 

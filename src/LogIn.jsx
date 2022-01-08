@@ -47,7 +47,7 @@ const LogIn = (props) => {
       <button onClick={handleSignUp} className=" btn btn-dark p-2 me-1">
         Sign up
       </button>
-      <button onClick={handleLogIn} className=" btn btn-dark p-2">
+      <button onSubmit={handleLogIn} className=" btn btn-dark p-2">
         Log in{" "}
       </button>
     </div>
