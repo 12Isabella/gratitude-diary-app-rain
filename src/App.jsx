@@ -3,6 +3,13 @@ import { nanoid } from "nanoid";
 import "./App.css";
 import GratitudeItem from "./GratitudeItem";
 import EditModal from "./EditModal";
+import LogIn from "./LogIn";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 import { initializeApp } from "firebase/app";
 import {
@@ -12,6 +19,8 @@ import {
   getDocs,
   setDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -27,23 +36,68 @@ const collectionName = "gratitudeItems";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// Example Test
-async function getgratitudeItems(db) {
-  const gratitudeItemsCol = collection(db, collectionName);
-  const gratitudeItemSnapshot = await getDocs(gratitudeItemsCol);
-  const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) => doc.data());
-  return gratitudeItemList;
-}
+const auth = getAuth();
 
 function App() {
   const [currentText, setCurrentText] = useState("");
-
   const [items, setItems] = useState([]);
+  const [user, setUser] = useState(null);
+
+  onAuthStateChanged(auth, (user) => setUser(user));
+
   useEffect(() => {
-    getgratitudeItems(db).then((items) => setItems(items));
-  }, []);
+    if (user != null) {
+      getgratitudeItems(db, user.uid).then((items) => {
+        setItems(items);
+      });
+    }
+  }, [user]);
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
+
+  function handleSignUp(email, password) {
+    createUserWithEmailAndPassword(auth, email, password).then(
+      (userCredential) => {
+        // Signed in
+        console.log("signed in", userCredential);
+        const user = userCredential.user;
+        setUser(user);
+        // ...
+      }
+    );
+    // handle fail not implemented yet
+    /* .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("error", error);
+        // ..
+      });*/
+  }
+
+  function handleLogIn(email, password) {
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      // Signed in
+
+      const user = userCredential.user;
+      console.log(user);
+      setUser(user);
+      // ...
+    });
+    // handle fail not implemented yet
+    /*  .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });*/
+  }
+
+  async function getgratitudeItems(db, userID) {
+    const gratitudeItemsCol = collection(db, collectionName);
+    const q = query(gratitudeItemsCol, where("uid", "==", userID));
+    const gratitudeItemSnapshot = await getDocs(q);
+    const gratitudeItemList = gratitudeItemSnapshot.docs.map((doc) =>
+      doc.data()
+    );
+    return gratitudeItemList;
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -53,6 +107,7 @@ function App() {
       id: nanoid(),
       text: currentText,
       date: date.toLocaleDateString(),
+      uid: user.uid,
     };
 
     const updatedItems = [...items, newNote];
@@ -111,6 +166,22 @@ function App() {
     <div className="App">
       <div className="container mt-3">
         {modal}
+        {user === null ? (
+          <LogIn signUp={handleSignUp} logIn={handleLogIn} />
+        ) : (
+          <React.Fragment />
+        )}
+        {editModal.open ? (
+          <EditModal
+            id={editModal.id}
+            items={items}
+            updateGratitudeItems={updateGratitudeItems}
+            closeModal={closeModal}
+          />
+        ) : (
+          <React.Fragment />
+        )}
+
         <h1 className="mt-3 mb-5">What are you grateful for today?</h1>
         <div className="input-group mb-5 gratitude-input ">
           <div className="input-group-prepend "></div>
