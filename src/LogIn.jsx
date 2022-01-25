@@ -45,6 +45,7 @@ const LogIn = (props) => {
             id="inputPassword"
           />
         </div>
+        <div className="p-2">{props.errorMessage}</div>
         <button
           type="button"
           onClick={handleSignUp}

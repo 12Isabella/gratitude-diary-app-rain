@@ -42,6 +42,7 @@ function App() {
   const [currentText, setCurrentText] = useState("");
   const [items, setItems] = useState([]);
   const [user, setUser] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   onAuthStateChanged(auth, (user) => setUser(user));
 
@@ -55,38 +56,56 @@ function App() {
   const [editModal, setEditModal] = useState({ open: false, id: 0 });
 
   function handleSignUp(email, password) {
-    createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         // Signed in
         console.log("signed in", userCredential);
         const user = userCredential.user;
         setUser(user);
         // ...
-      }
-    );
-    // handle fail not implemented yet
-    /* .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("error", error);
-        // ..
-      });*/
+      })
+      // handle fail not implemented yet
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/weak-password":
+            setErrorMessage("You're gonna need a stronger password! 🙄");
+
+            break;
+          case "auth/email-already-in-use":
+            setErrorMessage("We already have a user for this email 😏");
+            break;
+          default:
+            console.log("error code", error.code);
+            setErrorMessage("Sorry, something went wrong.");
+        }
+      });
   }
 
   function handleLogIn(email, password) {
-    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      // Signed in
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
 
-      const user = userCredential.user;
-      console.log(user);
-      setUser(user);
-      // ...
-    });
-    // handle fail not implemented yet
-    /*  .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });*/
+        const user = userCredential.user;
+        console.log(user);
+        setUser(user);
+        // ...
+      })
+      // handle fail not implemented yet
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/wrong-password":
+            setErrorMessage("You typed the wrong password 🙄");
+
+            break;
+          case "auth/user-not-found":
+            setErrorMessage("This is not your e-mail adress 😏");
+            break;
+          default:
+            console.log("error code", error.code);
+            setErrorMessage("Sorry, something went wrong.");
+        }
+      });
   }
 
   async function getgratitudeItems(db, userID) {
@@ -167,7 +186,11 @@ function App() {
       <div className="container mt-3">
         {modal}
         {user === null ? (
-          <LogIn signUp={handleSignUp} logIn={handleLogIn} />
+          <LogIn
+            signUp={handleSignUp}
+            logIn={handleLogIn}
+            errorMessage={errorMessage}
+          />
         ) : (
           <React.Fragment />
         )}
